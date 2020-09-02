@@ -1,0 +1,30 @@
+pipeline {
+    agent {
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh "pwd"
+                sh "ls -la"
+                sh 'node --version'
+            }
+        }
+        stage("Create docker image") {
+            steps {
+                echo " ================== start buolding image =============="
+                dir ('docker'){
+                    sh 'docker build .'
+                }
+                sh "ls -la"
+                sh "uptime"
+            }
+        }
+        stage('Stage-2') {
+            steps {
+                sh "pwd"
+                sh "ls -la"
+                sh "uptime"
+            }
+        }
+    }
+}   
