@@ -1,12 +1,13 @@
 pipeline {
-    agent { docker {image 'python:latest' }}
-    
+    agent {
+        docker { image 'node:14-alpine' }
+    }
     stages {
-        stage('1-stage') {
+        stage('Test') {
             steps {
-                echo 'Hello World'
                 sh "pwd"
                 sh "la -la"
+                sh 'node --version'
             }
         }
     }
