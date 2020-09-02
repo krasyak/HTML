@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh "pwd"
                 sh "ls -la"
-                sh 'node --version'
+                sh "uptime"
             }
         }
     }
