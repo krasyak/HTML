@@ -6,7 +6,14 @@ pipeline {
         stage('Test') {
             steps {
                 sh "pwd"
-                sh "la -la"
+                sh "ls -la"
+                sh 'node --version'
+            }
+        }
+        stage('Stage-2') {
+            steps {
+                sh "pwd"
+                sh "ls -la"
                 sh 'node --version'
             }
         }
