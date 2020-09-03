@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh "pwd"
                 sh "ls -la"
-				sh "ls ./docker
+				sh "ls ./docker"
             }
         }
         stage("Create docker image") {
