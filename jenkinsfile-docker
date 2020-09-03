@@ -2,14 +2,9 @@ pipeline {
     	
 	agent { label 'master' }
 	    
+    options { timestamps()}
+
     stages {
-        stage('Test') {
-            steps {
-                sh "pwd"
-                sh "ls -la"
-				sh "ls ./docker"
-            }
-        }
         stage('Docker Login') {
             steps {
                 echo " ====================== Docker Login ========================"
@@ -17,10 +12,17 @@ pipeline {
                     sh """
                     docker login -u $USERNAME -p $PASSWORD
                     """
+                        // available as an env variable, but will be masked if you try to print it out any which way
+                        // note: single quotes prevent Groovy interpolation; expansion is by Bourne Shell, which is what you want
+                    sh 'echo $PASSWORD'
+                        // also available as a Groovy variable
+                    echo USERNAME
+                        // or inside double quotes for string interpolation
+                    echo "username is $USERNAME"
                 }
             }
         }
-                stage("Create docker image") {
+        stage("Create docker image") {
             steps {
                 echo " ================== start buolding image =============="
                 dir ('docker'){
@@ -36,15 +38,6 @@ pipeline {
                 sh """
                     docker push krasyak/toolbox:latest
                 """
-            }
-        }
-        stage('Stage-2') {
-            steps {
-                sh '''
-				pwd
-                ls -la
-                uptime
-				'''
             }
         }
     }
