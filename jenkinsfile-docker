@@ -10,7 +10,16 @@ pipeline {
 				sh "ls ./docker"
             }
         }
-        stage("Create docker image") {
+        stage('Docker Login') {
+            steps {
+                echo " ====================== Docker Login ========================"
+                withCredentials([usernamePassword(credentialId: 'dockerhub_krasyak', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
+                    sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
+            }
+        }
+                stage("Create docker image") {
             steps {
                 echo " ================== start buolding image =============="
                 dir ('docker'){
@@ -18,6 +27,14 @@ pipeline {
                 }
                 sh "ls -la"
                 sh "uptime"
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                echo " ====================== Pushing Image ========================"
+                sh """
+                    docker push krasyak/toolbox:latest
+                """
             }
         }
         stage('Stage-2') {
