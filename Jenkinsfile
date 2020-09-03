@@ -29,7 +29,6 @@ pipeline {
                     sh 'docker build -t krasyak/toolbox:latest .'
                 }
                 sh "ls -la"
-                sh "uptime"
             }
         }
         stage('Docker Push') {
