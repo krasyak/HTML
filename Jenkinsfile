@@ -1,21 +1,44 @@
 pipeline {
-    agent {
-        docker { image 'node:14-alpine' }
-    }
+    	
+	agent { label 'master' }
+	    
+    options { timestamps()}
+
     stages {
-        stage('Test') {
+        stage('Docker Login') {
             steps {
-                sh "pwd"
-                sh "ls -la"
-                sh 'node --version'
+                echo " ====================== Docker Login ========================"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_krasyak', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
+                        // available as an env variable, but will be masked if you try to print it out any which way
+                        // note: single quotes prevent Groovy interpolation; expansion is by Bourne Shell, which is what you want
+                    sh 'echo $PASSWORD'
+                        // also available as a Groovy variable
+                    echo USERNAME
+                        // or inside double quotes for string interpolation
+                    echo "username is $USERNAME"
+                }
             }
         }
-        stage('Stage-2') {
+        stage("Create docker image") {
             steps {
-                sh "pwd"
+                echo " ================== start buolding image =============="
+                dir ('docker'){
+                    sh 'docker build -t krasyak/toolbox:latest .'
+                }
                 sh "ls -la"
                 sh "uptime"
             }
         }
+        stage('Docker Push') {
+            steps {
+                echo " ====================== Pushing Image ========================"
+                sh """
+                    docker push krasyak/toolbox:latest
+                """
+            }
+        }
     }
-}
+}   
