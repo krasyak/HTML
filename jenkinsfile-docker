@@ -22,9 +22,11 @@ pipeline {
         }
         stage('Stage-2') {
             steps {
-                sh "pwd"
-                sh "ls -la"
-                sh "uptime"
+                sh '''
+				pwd
+                ls -la
+                uptime
+				'''
             }
         }
     }
