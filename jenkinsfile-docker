@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo " ================== start buolding image =============="
                 dir ('docker'){
-                    sh 'docker build -t toolbox:latest .'
+                    sh 'docker build -t krasyak/toolbox:latest .'
                 }
                 sh "ls -la"
                 sh "uptime"
