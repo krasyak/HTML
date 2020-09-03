@@ -1,12 +1,13 @@
 pipeline {
-    agent {
-    }
+    	
+	agent { label 'master' }
+	    
     stages {
         stage('Test') {
             steps {
                 sh "pwd"
                 sh "ls -la"
-                sh 'node --version'
+				sh "ls ./docker"
             }
         }
         stage("Create docker image") {
@@ -21,9 +22,11 @@ pipeline {
         }
         stage('Stage-2') {
             steps {
-                sh "pwd"
-                sh "ls -la"
-                sh "uptime"
+                sh '''
+				pwd
+                ls -la
+                uptime
+				'''
             }
         }
     }
